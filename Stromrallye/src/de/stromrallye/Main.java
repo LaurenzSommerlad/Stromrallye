@@ -74,7 +74,7 @@ public class Main extends Application {
     }
 
     private void readBoardFile(final String path) {
-        try(BufferedReader reader = new BufferedReader(new FileReader(new File(path)))) {
+        try(BufferedReader reader = new BufferedReader(new InputStreamReader(this.getClass().getResourceAsStream("/stromrallye0.txt")))/*new FileReader(new File(path)))*/) {
             // the first line of the text file contains the size of the board
             boardSize = Integer.parseInt(reader.readLine());
             // creating a new board which size is the one read from the text file
