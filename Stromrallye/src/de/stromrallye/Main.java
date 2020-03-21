@@ -32,7 +32,7 @@ public class Main extends Application {
     int boardSize;
     int numBatteries;
 
-    private Field board[][];
+    private Field board[][]; //TODO: maybe static
 
     Group group;
 
@@ -70,7 +70,7 @@ public class Main extends Application {
 
         findFieldConnections();
 
-        //System.out.println(board[0][0].getReachables());
+        System.out.println(board[0][0]);
     }
 
     private void readBoardFile(final String path) {
@@ -141,7 +141,7 @@ public class Main extends Application {
         gc.setLineWidth(lineWidth);
 
         // draw borders and field separators for the board
-        for (int i = 0; i <= boardSize; i++) {
+        for (int i = 0; i <=boardSize; i++) {
                 gc.strokeLine(i*FIELD_WIDTH,  0, i*FIELD_WIDTH, boardSize * FIELD_WIDTH);
                 gc.strokeLine(0, i*FIELD_WIDTH, boardSize*FIELD_WIDTH, i*FIELD_WIDTH);
         }
@@ -194,6 +194,11 @@ public class Main extends Application {
                 }
             }
         }
+    }
+
+    // Method to calculate the distance between two Fields
+    public static int distance(int x1, int y1, int x2, int y2) {
+        return Math.abs(x1-x2) + Math.abs(y1-y2);
     }
 
     public static void main(String[] args) {

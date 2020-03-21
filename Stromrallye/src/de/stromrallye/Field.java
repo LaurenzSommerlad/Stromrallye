@@ -88,15 +88,17 @@ public class Field extends Rectangle {
     }
 
     public void collectReachables(final Field[][] board, final int curX, final  int curY) {
-        // check for each field with battery which other batteries are in range
-        for (int i = 0; i < board.length; i++) {
-            for(int j = 0; j < board.length; j++) {
-                // check field that has a battery on top, is not the current field  (to prevent distance 0) and if robot is on top (robot does not count as battery)
-                if(board[i][j] != null && !board[i][j].equals(this) && !board[i][j].isRobotOnTop()) {
-                    // calculate the shortest distance between two fields (with battery), by adding delta-X to delta-Y
-                    if(batteryCharge >= Math.abs(curX - i) + Math.abs(curY - j)) {
-                        // if battery charge of field is big enough (bigger or same as distance) add it to the reachable Fields of this Field
-                        reachables.add(board[i][j]);
+        if(batteryCharge >= 0) {
+            // check for each field with battery which other batteries are in range
+            for (int i = 0; i < board.length; i++) {
+                for (int j = 0; j < board.length; j++) {
+                    // check field that has a battery on top, is not the current field  (to prevent distance 0) and if robot is on top (robot does not count as battery)
+                    if (board[i][j] != null && !board[i][j].equals(this) && !board[i][j].isRobotOnTop()) {
+                        // calculate the shortest distance between two fields (with battery), by adding delta-X to delta-Y
+                        if (batteryCharge >= Main.distance(curX, curY, i, j)) {
+                            // if battery charge of field is big enough (bigger or same as distance) add it to the reachable Fields of this Field
+                            reachables.add(board[i][j]);
+                        }
                     }
                 }
             }
@@ -105,14 +107,17 @@ public class Field extends Rectangle {
     }
 
     public void collectAllReachables(final Field[][] board, final int curX, final  int curY) {
-        for (int i = 0; i < board.length; i++) {
-            for(int j = 0; j < board.length; j++) {
-                // check field that has a battery on top, is not the current field  (to prevent distance 0)
-                if(!board[i][j].equals(this)) {
-                    // calculate the shortest distance between two fields (with battery), by adding delta-X to delta-Y
-                    if(batteryCharge >= Math.abs(curX - i) + Math.abs(curY - j)) {
-                        // if battery charge of field is big enough (bigger or same as distance) add it to the reachable Fields of this Field
-                        allReachables.add(board[i][j]);
+        // batteries with charge zero or fields without batteries shall not be checked
+        if(batteryCharge >= 0) {
+            for (int i = 0; i < board.length; i++) {
+                for (int j = 0; j < board.length; j++) {
+                    // check field that has a battery on top, is not the current field  (to prevent distance 0)
+                    if (!board[i][j].equals(this)) {
+                        // calculate the shortest distance between two fields (with battery), by adding delta-X to delta-Y
+                        if (batteryCharge >= Main.distance(curX, curY, i, j)) {
+                            // if battery charge of field is big enough (bigger or same as distance) add it to the reachable Fields of this Field
+                            allReachables.add(board[i][j]);
+                        }
                     }
                 }
             }
