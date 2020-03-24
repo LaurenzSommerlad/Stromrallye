@@ -59,6 +59,15 @@ public class Field extends Rectangle {
                         pressed = true;
                     }
                 }
+                if (event.getButton() == MouseButton.SECONDARY) {
+                    if (Main.distance(Main.getRobotX(), Main.getRobotY(), posX, posY) <= Main.getRobotCharge()) {
+                        robotOnTop = true;
+                        Main.setRobotCharge(Main.getRobotCharge() - Main.distance(Main.getRobotX(), Main.getRobotY(), posX, posY));
+                        batteryCharge = Main.getRobotCharge();
+
+                        //TODO: swap battery
+                    }
+                }
             }
         });
     }

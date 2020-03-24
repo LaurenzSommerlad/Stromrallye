@@ -25,14 +25,15 @@ public class Main extends Application {
     // the width a Field on the board shall have
     final public static int FIELD_WIDTH = 30;
 
-    private int robotX;
-    private int robotY;
-    private int robotCharge;
+    //TODO: maybe not static
+    private static int robotX;
+    private static int robotY;
+    private static int robotCharge;
 
     int boardSize;
     int numBatteries;
 
-    private Field board[][]; //TODO: maybe static
+    private static Field board[][]; //TODO: maybe not static
 
     Group group;
 
@@ -46,7 +47,7 @@ public class Main extends Application {
         group = new Group();
 
         // read the file(s) that contains the boards
-        readBoardFile("src/stromrallye0.txt"); //TODO: how to really read this correctly?
+        readBoardFile("/stromrallye3.txt"); //TODO: how to really read this correctly?
         // a canvas on which the board is drawn
         Canvas boardCanvas = drawBoard();
         // every empty Field so far is going to be added a rectangle
@@ -74,7 +75,7 @@ public class Main extends Application {
     }
 
     private void readBoardFile(final String path) {
-        try(BufferedReader reader = new BufferedReader(new InputStreamReader(this.getClass().getResourceAsStream("/stromrallye0.txt")))/*new FileReader(new File(path)))*/) {
+        try(BufferedReader reader = new BufferedReader(new InputStreamReader(this.getClass().getResourceAsStream(path)))) {
             // the first line of the text file contains the size of the board
             boardSize = Integer.parseInt(reader.readLine());
             // creating a new board which size is the one read from the text file
@@ -124,7 +125,8 @@ public class Main extends Application {
         for (int i = 0; i < board.length; i++) {
             for (int j = 0; j < board.length; j++) {
                 if (board[i][j] == null) {
-                    board[i][j] = new Field(i+1, j+1);
+                    board[i][j] = new Field(i, j);
+                    group.getChildren().add(board[i][j]);
                 }
             }
         }
@@ -199,6 +201,30 @@ public class Main extends Application {
     // Method to calculate the distance between two Fields
     public static int distance(int x1, int y1, int x2, int y2) {
         return Math.abs(x1-x2) + Math.abs(y1-y2);
+    }
+
+    public static int getRobotX() {
+        return robotX;
+    }
+
+    public static void setRobotX(int robotX) {
+        Main.robotX = robotX;
+    }
+
+    public static int getRobotY() {
+        return robotY;
+    }
+
+    public static void setRobotY(int robotY) {
+        Main.robotY = robotY;
+    }
+
+    public static int getRobotCharge() {
+        return robotCharge;
+    }
+
+    public static void setRobotCharge(int robotCharge) {
+        Main.robotCharge = robotCharge;
     }
 
     public static void main(String[] args) {
