@@ -35,7 +35,9 @@ public class Main extends Application {
 
     private static Field board[][]; //TODO: maybe not static
 
-    Group group;
+    private Group group;
+
+    private Canvas fieldCanvas;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -53,7 +55,8 @@ public class Main extends Application {
         // every empty Field so far is going to be added a rectangle
         fillOutRectangles();
         // a canvas on which the game elements (robot, batteries, charges) are drawn
-        Canvas fieldCanvas = updateFields();
+        fieldCanvas = new Canvas();
+        updateFields();
         /* - both canvases  are in a layer system (Group contains both)
            - the board canvas doesn't need to be updated
            the fieldCanvas has to be updated because of moving game elements
@@ -144,16 +147,16 @@ public class Main extends Application {
 
         // draw borders and field separators for the board
         for (int i = 0; i <=boardSize; i++) {
-                gc.strokeLine(i*FIELD_WIDTH,  0, i*FIELD_WIDTH, boardSize * FIELD_WIDTH);
-                gc.strokeLine(0, i*FIELD_WIDTH, boardSize*FIELD_WIDTH, i*FIELD_WIDTH);
+            gc.strokeLine(i*FIELD_WIDTH,  0, i*FIELD_WIDTH, boardSize * FIELD_WIDTH);
+            gc.strokeLine(0, i*FIELD_WIDTH, boardSize*FIELD_WIDTH, i*FIELD_WIDTH);
         }
         return canvas;
     }
 
-    private Canvas updateFields() {
+    private void updateFields() {
         // Canvas that is as wide as the board canvas (second layer)
-        Canvas canvas = new Canvas(FIELD_WIDTH*boardSize, FIELD_WIDTH*boardSize);
-        GraphicsContext gc = canvas.getGraphicsContext2D();
+        fieldCanvas = new Canvas(FIELD_WIDTH*boardSize, FIELD_WIDTH*boardSize);
+        GraphicsContext gc = fieldCanvas.getGraphicsContext2D();
         // center the text and add a Font to it
         gc.setTextAlign(TextAlignment.CENTER);
         gc.setTextBaseline(VPos.CENTER);
@@ -168,7 +171,6 @@ public class Main extends Application {
                 }
             }
         }
-        return canvas;
     }
 
     private void drawField(final GraphicsContext gc,  final Field curField, final int i, final int j) {
